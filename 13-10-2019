@@ -1,0 +1,84 @@
+CREATE TABLE CUSTOMERS ( 
+    ID INTEGER PRIMARY KEY, 
+    FIRST_NAME VARCHAR(50) NOT NULL, 
+    LAST_NAME VARCHAR(50) NOT NULL, 
+    PHONE VARCHAR(100),
+    ADDRESS VARCHAR(100),
+    EMAIL VARCHAR (100)
+);
+
+CREATE TABLE SIZE ( 
+    ID INTEGER PRIMARY KEY, 
+    SIZE_NAME VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE PIZZA ( 
+    ID INTEGER PRIMARY KEY, 
+    PIZZA_NAME VARCHAR(50) NOT NULL, 
+    SizeId INTEGER, 
+    PIZZA_PRICE DECIMAL NOT NULL,
+    FOREIGN KEY (SizeId)  REFERENCES SIZE (id)
+);
+
+CREATE TABLE ORDERS (
+    Id INTEGER PRIMARY KEY,
+    DATE_OF_ORDER VARCHAR(50) NOT NULL,
+    PizzaId INTEGER,
+    CustomersId INTEGER,
+    NUMBER_OF_PIZZA INTEGER,
+    FOREIGN KEY (CustomersId)  REFERENCES CUSTOMERS (id),
+    FOREIGN KEY (PizzaID)  REFERENCES PIZZA (id)
+);
+
+INSERT INTO customers VALUES (1, 'Vanya', 'Ivan', '11111', 'Fontanskaya doroga, 1', ' 11111@gmail.com');
+INSERT INTO customers VALUES (2, 'Petro', 'Petrov', '22222', 'Fontanskaya doroga, 2', ' 22222@gmail.com');
+INSERT INTO customers VALUES (3, 'Sergey', 'Sergeev', '33333', 'Fontanskaya doroga,3', ' 33333@gmail.com');
+INSERT INTO customers VALUES (4, 'Victor', 'Victorov', '4444', 'Fontanskaya doroga, 4', ' 4444@gmail.com');
+INSERT INTO customers VALUES (5, 'Grigorii', 'Grigorev', '55555', 'Fontanskaya doroga, 5', ' 55555@gmail.com');
+
+UPDATE customers SET first_name = 'Ivan', last_name = 'Ivanov' WHERE first_name = 'Vanya'; 
+
+INSERT INTO SIZE VALUES (1, 'small' );
+INSERT INTO SIZE VALUES (2, 'medium');
+INSERT INTO SIZE VALUES (3, 'large');
+
+INSERT INTO PIZZA VALUES (11,'Pizza number ONE', 1, 120.0);
+INSERT INTO PIZZA VALUES (12,'Pizza number ONE', 2, 130.0);
+INSERT INTO PIZZA VALUES (13,'Pizza number ONE', 3, 140.0);
+INSERT INTO PIZZA VALUES (21,'Pizza number TWO', 1, 130.0);
+INSERT INTO PIZZA VALUES (22,'Pizza number TWO', 2, 140.0);
+INSERT INTO PIZZA VALUES (23,'Pizza number TWO', 3, 150.0);
+INSERT INTO PIZZA VALUES (31,'Pizza number THREE', 1, 150.0);
+INSERT INTO PIZZA VALUES (32,'Pizza number THREE', 2, 160.0);
+INSERT INTO PIZZA VALUES (33,'Pizza number THREE', 3, 170.0);
+
+INSERT INTO ORDERS VALUES (101, '12.10.2019', 21, 5, 3);
+INSERT INTO ORDERS VALUES (102, '12.10.2019', 21, 2, 3);
+INSERT INTO ORDERS VALUES (103, '12.10.2019', 11, 1, 1);
+INSERT INTO ORDERS VALUES (104, '13.10.2019', 22, 5, 1);
+INSERT INTO ORDERS VALUES (105, '13.10.2019', 33, 2, 2);
+INSERT INTO ORDERS VALUES (106, '13.10.2019', 13, 3, 5);
+
+SELECT * FROM CUSTOMERS ;
+SELECT * FROM SIZE;
+SELECT * FROM PIZZA;
+SELECT * FROM ORDERS ;
+
+SELECT first_name, last_name from CUSTOMERS WHERE id = 2;
+SELECT id, last_name from CUSTOMERS WHERE id > 2 ;
+SELECT first_name from CUSTOMERS GROUP BY first_name;
+
+
+SELECT last_name from CUSTOMERS WHERE id < 4 ORDER BY last_name;
+
+SELECT * FROM ORDERS INNER JOIN CUSTOMERS, PIZZA ON orders.CustomersId = Customers.id 
+and orders.PizzaId = Pizza.id;
+
+SELECT id, first_name, last_name from CUSTOMERS WHERE id > 3 OR first_name = 'Ivan';
+
+SELECT first_name, last_name, PHONE,ADDRESS from CUSTOMERS WHERE id IN (2,3,5);
+
+SELECT * FROM ORDERS, SIZE INNER JOIN CUSTOMERS, PIZZA
+ON orders.CustomersId = Customers.id 
+and orders.PizzaId = Pizza.id
+and pizza.sizeId = Size.Id;
